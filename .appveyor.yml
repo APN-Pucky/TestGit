@@ -22,13 +22,12 @@ branches:
 before_build:
   - cmd: cmake .
   - cmd: dir
-
-#build: off
-
-after_build:
   - cmd: dir
   - cmd: dir test
   - cmd: main.exe -version
 
 
+#build: off
+
+  
 test: off
