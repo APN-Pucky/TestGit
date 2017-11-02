@@ -21,6 +21,8 @@ branches:
 
 before_build:
   - cmd: cmake .
+  - cmd: dir
+  - cmd: main -version
 
 build: off
 
