@@ -19,8 +19,6 @@ branches:
   except:
     - gh-pages
 
-matrix:
-  - project_name: Project.s1n
 
 before_build:
         #- cmd: md build
@@ -30,6 +28,10 @@ before_build:
   - cmd: dir
     #- cmd: dir build
     #- cmd: dir test
+build:
+  - verbosity: normal
+  - project: Project.s1n
+
 after_build:
   - cmd: main.exe -version
 
