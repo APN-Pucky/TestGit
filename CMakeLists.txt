@@ -1,0 +1,9 @@
+cmake_minimum_required(Version 2.8)
+set(Boost_INCLUDE_DIR C:\Libraries\boost_1_59_0)
+set(Boost_LIBRARY_DIR C:\Libraries\boost_1_59_0\lib64-msvc-14.0)
+find_package(Boost COMPONENTS system filesystem REQUIRED)
+include_directories(${Boost_INCLUDE_DIR})
+link_directories(${Boost_LIBRARY_DIR})
+
+add_executable(main main.cpp)
+target_link_libraries(main ${Boost_LIBRARIES})
