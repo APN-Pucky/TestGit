@@ -7,6 +7,6 @@ addons:
     packages: libboost-all-dev
 install:
 
-script: make
+script: make rebuild -f Makefile.linux
 
 deploy:
