@@ -1,0 +1,15 @@
+version: "{build}"
+
+os: Visual Studio 2015
+
+platform: Any CPU
+
+environment:
+  MSVC_DEFAULT_OPTIONS: ON
+  BOOST_ROOT: C:\Libraries\boost_1_59_0
+  BOOST_LIBRARYDIR: C:\Libraries\boost_1_59_0\lib64-msvc-14.0
+
+init:
+  - cmd: cmake
+
+test: off
