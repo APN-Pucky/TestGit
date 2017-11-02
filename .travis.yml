@@ -1,13 +1,18 @@
 language: cpp
-compiler: gcc
-dist: trusty
+compiler: 
+  - gcc
+  - clang
+os:
+  - linux
+  - osx
 addons:
   apt:
     packages: libboost-all-dev
 install: 
 
 script: 
-  - "make rebuild -f Makefile.linux VERSION=$TRAVIS_TAG-build-$TRAVIS_BUILD_NUMBER"
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make rebuild -f Makefile.osx VERSION=$TRAVIS_TAG-build-$TRAVIS_BUILD_NUMBER; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make rebuild -f Makefile.linux VERSION=$TRAVIS_TAG-build-$TRAVIS_BUILD_NUMBER; fi
   - ./main -version
 
 deploy:
