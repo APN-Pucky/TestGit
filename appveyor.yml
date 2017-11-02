@@ -13,4 +13,6 @@ init:
   - cmd: dir
   - cmd: cmake testgit
 
+clone_folder: C:\projects\testgit
+
 test: off
