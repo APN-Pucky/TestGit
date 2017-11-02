@@ -19,8 +19,10 @@ branches:
   except:
     - gh-pages
 
-build:
-  - cmd cmake .
+before_build:
+  - cmd: cmake .
+
+build: off
 
 
 test: off
