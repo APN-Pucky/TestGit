@@ -24,7 +24,9 @@ before_build:
   - cmd: dir
   - cmd: main -version
 
-build: off
+#build: off
 
+after_build:
+  - cmd: dir
 
 test: off
