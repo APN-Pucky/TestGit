@@ -24,11 +24,10 @@ before_build:
   - mkdir build
 
 build_script:
-  - cd build
- # $(appveyor_repo_tag_name)=VERSION
-  - cmake -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" ..
-  - cmake --build . 
-  - mv Debug/main.exe ../
+        #- cd build
+ # =VERSION
+  - cmd: C:\MinGW\bin\make.exe 
+    #- mv Debug/main.exe ../
   - cmd: dir
   - cd ..
   - cmd: dir
