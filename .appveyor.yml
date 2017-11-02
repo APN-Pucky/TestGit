@@ -20,9 +20,12 @@ branches:
     - gh-pages
 
 before_build:
-  - cmd: cmake .
+  - cmd: md build
+  - cmd: cd build
+  - cmd: cmake ..
+  - cmd: cd -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" ..
   - cmd: dir
-  - cmd: dir
+  - cmd: dir build
   - cmd: dir test
   - cmd: main.exe -version
 
