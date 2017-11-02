@@ -24,7 +24,7 @@ before_build:
   - cmd: dir
   - cmd: main.exe -version
 
-build: off
+#build: off
 
 after_build:
   - cmd: dir
