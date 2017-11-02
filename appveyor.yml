@@ -10,6 +10,6 @@ environment:
   BOOST_LIBRARYDIR: C:\Libraries\boost_1_59_0\lib64-msvc-14.0
 
 init:
-  - cmd: cmake
+  - cmd: cmake .
 
 test: off
