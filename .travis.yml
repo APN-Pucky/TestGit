@@ -7,7 +7,7 @@ addons:
 install: 
 
 script: 
-  - make rebuild -f Makefile.linux VERSION=$TRAVIS_TAG
+  - "make rebuild -f Makefile.linux VERSION=$TRAVIS_TAG"
   - ./main -version
 
 deploy:
