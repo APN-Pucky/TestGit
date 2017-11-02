@@ -19,7 +19,8 @@ init:
   - cmd: msbuild /version
 
 branches:
-
+  except:
+    - gh-pages
 clone_folder: C:\projects\testgit
 
 test: off
