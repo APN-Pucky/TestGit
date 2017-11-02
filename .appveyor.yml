@@ -19,6 +19,9 @@ branches:
   except:
     - gh-pages
 
+matrix:
+  - project_name: Project.s1n
+
 before_build:
         #- cmd: md build
     #- cmd: cd build
