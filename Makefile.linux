@@ -1,0 +1,24 @@
+MAIN := main
+SRCS := $(wildcard *.cpp)
+OBJS := $(patsubst %.cpp,obj/%.o,$(SRCS))
+INCS := $(wildcard *.h)
+
+CPPFLAGS := -Wall -Werror -std=gnu++11 -Ofast -g -DNDEBUG -DNQUEST -DTYRANT_OPTIMIZER_VERSION='"$(VERSION)"'
+LDFLAGS := -lboost_system -lboost_thread -lboost_filesystem -lboost_regex
+
+all: $(MAIN)
+
+obj/.stamp:
+	mkdir -p obj
+	touch obj/.stamp
+
+obj/%.o: %.cpp $(INCS) obj/.stamp
+	$(CXX) $(CPPFLAGS) -o $@ -c $<
+
+$(MAIN): $(OBJS)
+	$(CXX) -o $@ $(OBJS) $(LDFLAGS)
+
+rebuild: clean all
+
+clean:
+	rm -rf $(MAIN) obj/*.o

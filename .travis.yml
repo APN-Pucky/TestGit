@@ -1,0 +1,12 @@
+language: cpp
+compiler: gcc
+dist: trusty
+
+addons:
+  apt:
+    packages: libboost-all-dev
+install:
+
+script: make
+
+deploy:
