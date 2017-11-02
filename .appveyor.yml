@@ -9,16 +9,18 @@ environment:
   BOOST_ROOT: C:\Libraries\boost_1_59_0
   BOOST_LIBRARYDIR: C:\Libraries\boost_1_59_0\lib64-msvc-14.0
 
-
 init:
-  - cmd: dir
   - cmd: cmake --version
   - cmd: msbuild /version
+
+clone_folder: C:\projects\testgit
 
 branches:
   except:
     - gh-pages
 
-clone_folder: C:\projects\testgit
+build:
+  - cmd cmake .
+
 
 test: off
