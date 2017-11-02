@@ -28,6 +28,7 @@ before_build:
 
 after_build:
   - cmd: dir
+  - cmd: dir test
 
 
 test: off
