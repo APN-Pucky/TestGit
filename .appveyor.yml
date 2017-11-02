@@ -27,6 +27,7 @@ before_build:
   - cmd: dir
   - cmd: dir build
   - cmd: dir test
+after_build:
   - cmd: main.exe -version
 
 
