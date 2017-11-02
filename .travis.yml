@@ -5,7 +5,11 @@ addons:
   apt:
     packages: libboost-all-dev
 install: 
-script: make rebuild -f Makefile.linux VERSION=$TRAVIS_TAG
+
+script: 
+  - make rebuild -f Makefile.linux VERSION=$TRAVIS_TAG
+  - ./main -version
+
 deploy:
   provider: releases
   api_key:
