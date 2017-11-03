@@ -1,5 +1,5 @@
-MAIN := tuo.osx
-SRCS := $(wildcard *.cpp)
+MAIN := main.osx
+SRCS := $(main.cpp)
 OBJS := $(patsubst %.cpp,obj/%.o,$(SRCS))
 INCS := $(wildcard *.h)
 
