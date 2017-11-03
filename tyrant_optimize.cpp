@@ -829,11 +829,7 @@ public:
     }
 };
 //------------------------------------------------------------------------------
-void thread_evaluate(boost::barrier& main_barrier,
-                     boost::mutex& shared_mutex,
-                     SimulationData& sim,
-                     const Process& p,
-                     unsigned thread_id)
+void thread_evaluate(boost::barrier& main_barrier, boost::mutex& shared_mutex, SimulationData& sim, const Process& p, unsigned thread_id)
 {
     while (true)
     {
@@ -1334,8 +1330,7 @@ void hill_climbing(unsigned num_min_iterations, unsigned num_iterations, Deck* d
         {
             for (const Card* dom_card : alpha_dominion_candidates)
             {
-                std::cout << " ** next Alpha Dominion candidate: " << dom_card->m_name
-                    << " ($: " << alpha_dominion_cost(dom_card) << ")" << std::endl;
+                std::cout << " ** next Alpha Dominion candidate: " << dom_card->m_name << " ($: " << alpha_dominion_cost(dom_card) << ")" << std::endl;
             }
         }
     }
@@ -1403,9 +1398,7 @@ void hill_climbing(unsigned num_min_iterations, unsigned num_iterations, Deck* d
                 { break; }
                 if (alpha_dominion_candidate == best_alpha_dominion)
                 { continue; }
-                deck_has_been_improved |= try_improve_deck(d1, -1, -1, alpha_dominion_candidate,
-                    best_commander, best_alpha_dominion, best_cards, best_score, best_gap, best_deck,
-                    evaluated_decks, zero_results, skipped_simulations, proc);
+                deck_has_been_improved |= try_improve_deck(d1, -1, -1, alpha_dominion_candidate, best_commander, best_alpha_dominion, best_cards, best_score, best_gap, best_deck, evaluated_decks, zero_results, skipped_simulations, proc);
             }
             // Now that all alpha dominions are evaluated, take the best one
             d1->commander = best_commander;
@@ -1428,9 +1421,7 @@ void hill_climbing(unsigned num_min_iterations, unsigned num_iterations, Deck* d
                         :
                         (from_slot == best_cards.size())) // void -> void
                 { continue; }
-                deck_has_been_improved |= try_improve_deck(d1, from_slot, to_slot, card_candidate,
-                    best_commander, best_alpha_dominion, best_cards, best_score, best_gap, best_deck,
-                    evaluated_decks, zero_results, skipped_simulations, proc);
+                deck_has_been_improved |= try_improve_deck(d1, from_slot, to_slot, card_candidate, best_commander, best_alpha_dominion, best_cards, best_score, best_gap, best_deck, evaluated_decks, zero_results, skipped_simulations, proc);
             }
             if (best_score.points - target_score > -1e-9)
             { break; }
