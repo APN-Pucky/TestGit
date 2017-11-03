@@ -1,5 +1,5 @@
 MAIN := main
-SRCS := $(wildcard *.cpp)
+SRCS := $(main.cpp)
 OBJS := $(patsubst %.cpp,obj/%.o,$(SRCS))
 INCS := $(wildcard *.h)
 
