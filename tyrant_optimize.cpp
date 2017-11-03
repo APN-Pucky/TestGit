@@ -703,7 +703,7 @@ struct SimulationData
 #endif
                 your_bg_effects, enemy_bg_effects, your_bg_skills, enemy_bg_skills);
             Results<uint64_t> result(play(&fd));
-            if (__builtin_expect(mode_open_the_deck, false))
+            if (EXPECT(mode_open_the_deck, false))
             {
                 // are there remaining (unopened) cards?
                 if (fd.players[1]->deck->shuffled_cards.size())
