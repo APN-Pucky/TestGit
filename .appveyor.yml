@@ -43,7 +43,8 @@ build_script:
   - cmd: if "%platform%"=="Win32" mv main.exe main_x86.exe
 
 test_script:
-  - cmd: main.exe -version
+  - cmd: if "%platform%"=="Win32" main_x86.exe -version
+  - cmd: if "%platform%"=="x64" main.exe -version
 
 artifacts:
   - path: main.exe
