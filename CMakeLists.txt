@@ -12,9 +12,9 @@ add_definitions(-DTYRANT_OPTIMIZER_VERSION="${VERSION}")
 
 file(GLOB_RECURSE TUO_SOURCES "*.cpp")
 
-include_directories(${Boost_INCLUDE_DIR})
+include_directories("./" ${Boost_INCLUDE_DIR})
 link_directories(${Boost_LIBRARY_DIR})
 
 project(tuo)
 add_executable(tuo ${TUO_SOURCES})
-target_link_libraries(main ${Boost_LIBRARIES})
+target_link_libraries(tuo ${Boost_LIBRARIES})
