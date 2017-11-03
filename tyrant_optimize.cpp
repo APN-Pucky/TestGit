@@ -1438,14 +1438,7 @@ void hill_climbing(unsigned num_min_iterations, unsigned num_iterations, Deck* d
     print_deck_inline(get_deck_cost(d1), best_score, d1);
 }
 //------------------------------------------------------------------------------
-enum Operation {
-    noop,
-    simulate,
-    climb,
-    reorder,
-    debug,
-    debuguntil,
-};
+enum Operation {noop, simulate,climb,reorder, debug, debuguntil,};
 //------------------------------------------------------------------------------
 extern void(*skill_table[Skill::num_skills])(Field*, CardStatus* src_status, const SkillSpec&);
 void print_available_effects()
