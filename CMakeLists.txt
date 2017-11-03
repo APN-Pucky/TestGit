@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
+set( CMAKE_CXX_STANDARD 11 )
 set(Boost_INCLUDE_DIR "C:/Libraries/boost_1_59_0")
 #set(BIT "32" CACHE STRING "")
 if ("${BIT}" STREQUAL "64")
