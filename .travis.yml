@@ -13,7 +13,9 @@ install:
 script: 
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make rebuild -f Makefile.osx VERSION=$TRAVIS_TAG-build-$TRAVIS_BUILD_NUMBER; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make rebuild -f Makefile.linux VERSION=$TRAVIS_TAG-build-$TRAVIS_BUILD_NUMBER; fi
-  - ./main -version
+after_sucess:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]];./main.osx -version;fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]];./main -version;fi
 
 deploy:
   provider: releases
