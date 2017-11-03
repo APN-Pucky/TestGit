@@ -16,13 +16,16 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./main.osx -version; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./main -version; fi
 
+before_deploy:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export FILE="main.osx" ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export FILE="main" ; fi
+
 deploy:
   provider: releases
   api_key:
     secure: AW+LUt5C16DYzqJ2Yx57iUrLJJEln7sAdyokGzEB45p/KXzGVQ9GjtGOtaUqupmBMa5j0aKJcA4lvLGsX6/NMus+jORuGbLKtc3STQsMpJah35ZPWYgg4BZaNTtuL1XZEyLZZrjVw5SssUDLhTXl+l/d01fl04QOiQUPcMGCcwxs76B5gPfJRtJy8bP4HDseHc62oiPQFMLUZ/dZ2xYWttXxmacX0pC+IZqTNIWBgYuhAtuJE63VXTi6p6tOwpAXQ1eTpUUFnVRJ18drRZNCu/4s/dtg/w7XXG12IlGYpCRnT2DknBI5ULG2yW0lhSS2MYfR9EhKQkwAsXD0Cm7sXA1h6aOrNu+oW/t+nDiNj5qbGg64e5meP58aozhsZcoqt3yPky58wcibQ9vdMHvV94hRHZkVQB9VDg5wfAn+xGlAcsNdqlbBoCAJEUQC1IEfGWXWJMbjMcpnI3vhvFDdhATVx3vMORdq+0Fhqz6YLGMk6d14x6xw0xf/YDP1JYrthP5iSl5bzNJmCjtZWJdRs2p8eqqpTVBPC3oX2YzbC2Ozm0Du3AjcfRZLCh2z3y3Bv03amAW0XpabXb7kN2/+exeOgo85uuZOTa1Ug7ZfnJ+poC0pREokegSNoOtp7U92DysUlkeTLqNIaLGkULO+Um1wNBYMuvFk400B6x8pHTg=
   file: 
-    - main
-    - main.osx
+    - "${FILE}"
   skip_cleanup: true
   on:
     tags: true
