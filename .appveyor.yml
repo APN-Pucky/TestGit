@@ -28,6 +28,7 @@ build_script:
   - cd build
   - cmake ..
   - cmake --build . 
+  - mv Debug/HelloWorld.exe ../
   - cmd: dir
   - cd ..
   - cmd: dir
