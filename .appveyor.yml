@@ -54,9 +54,7 @@ deploy:
   provider: Github
   auth_token:
     secure: 2ep5AcGb2Wl/vxhuoj8sYg/pTrcMmyChrOaS/BEytYqpPNB49lmkNVRrFpYB3KkL
-  artifact: 
-    - main
-    - main_x86
+  artifact: /main.*/
   draft: false
   prerelease: false
   on:
