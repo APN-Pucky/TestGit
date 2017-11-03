@@ -7,7 +7,7 @@ if ("${BIT}" STREQUAL "64")
 else()
 	set(Boost_LIBRARY_DIR "C:/Libraries/boost_1_59_0/lib32-msvc-14.0")
 endif()
-add_definitions(-DTYRANT_OPTIMIZER_VERSION="${VERSION}")
+add_definitions(-DTYRANT_OPTIMIZER_VERSION="${VERSION}" -DNDEBUG -DNQUEST)
 #FIND_PACKAGE( Boost 1.59 COMPONENTS system filesystem REQUIRED )
 #find_package(Boost COMPONENTS system filesystem REQUIRED)
 

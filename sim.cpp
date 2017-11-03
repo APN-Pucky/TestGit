@@ -2802,7 +2802,7 @@ Results<uint64_t> play(Field* fd)
             fd->prepare_action();
 
             // Play selected card
-            //CardStatus* played_status = nullptr;
+            CardStatus* played_status = nullptr;
             switch (played_card->m_type)
             {
             case CardType::assault:
