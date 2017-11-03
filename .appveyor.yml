@@ -24,8 +24,7 @@ before_build:
   - mkdir build
 
 build_script:
- # =VERSION
-  - mkdir build
+        # =VERSION
   - cd build
   - cmake ..
   - cmake --build . 
