@@ -9,9 +9,12 @@ endif()
 add_definitions(-DTYRANT_OPTIMIZER_VERSION="${VERSION}")
 #FIND_PACKAGE( Boost 1.59 COMPONENTS system filesystem REQUIRED )
 #find_package(Boost COMPONENTS system filesystem REQUIRED)
+
+file(GLOB_RECURSE TUO_SOURCES "*.cpp")
+
 include_directories(${Boost_INCLUDE_DIR})
 link_directories(${Boost_LIBRARY_DIR})
 
-project(main)
-add_executable(main main.cpp)
+project(tuo)
+add_executable(tuo ${TUO_SOURCES})
 target_link_libraries(main ${Boost_LIBRARIES})

@@ -13,12 +13,12 @@ install:
 script: 
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make rebuild -f Makefile.osx VERSION=$TRAVIS_TAG-build-$TRAVIS_BUILD_NUMBER; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make rebuild -f Makefile.linux VERSION=$TRAVIS_TAG-build-$TRAVIS_BUILD_NUMBER; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./main.osx -version; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./main -version; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./tuo_osx -version; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./tuo -version; fi
 
 before_deploy:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export FILE="main.osx" ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export FILE="main" ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export FILE="tuo_osx" ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export FILE="tuo" ; fi
 
 deploy:
   provider: releases
