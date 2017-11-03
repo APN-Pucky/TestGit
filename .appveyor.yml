@@ -33,8 +33,8 @@ build_script:
   - cmd: if "%platform%"=="x64" set CMAKE_GENERATOR_NAME=Visual Studio 14 2015 Win64
   - cmd: if "%platform%"=="Win32" set BOOST_LIBRARYDIR="%BOOST_LIBRARYDIR_32%"
   - cmd: if "%platform%"=="x64" set BOOST_LIBRARYDIR="%BOOST_LIBRARYDIR_64%"
-  - cmd: if "%platform%"=="Win32" cmake -G "%CMAKE_GENERATOR_NAME%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DBIT:STRING=32 ..
-  - cmd: if "%platform%"=="x64" cmake -G "%CMAKE_GENERATOR_NAME%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DBIT:STRING=64 ..
+  - cmd: if "%platform%"=="Win32" cmake -G "%CMAKE_GENERATOR_NAME%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DBIT:STRING=32 -DVERSION:STRING="${APPVEYOR_REPO_TAG_NAME}-build-${APPVEYOR_BUILD_NUMER}" ..
+  - cmd: if "%platform%"=="x64" cmake -G "%CMAKE_GENERATOR_NAME%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DBIT:STRING=64 -DVERSION:STRING="${APPVEYOR_REPO_TAG_NAME}-build-${APPVEYOR_BUILD_NUMER}" ..
   - cmd: cmake --build . 
   - mv Debug/main.exe ../
   - cmd: dir
