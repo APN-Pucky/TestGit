@@ -2400,7 +2400,7 @@ CardStatus* check_and_perform_summon(Field* fd, CardStatus* src)
                 summoned_card->m_id, card_description(fd->cards, summoned_card).c_str(),
                 summoned_card->m_type);
             _DEBUG_ASSERT(false);
-            __builtin_unreachable();
+            //__builtin_unreachable();
         }
     }
     return nullptr;
@@ -2637,7 +2637,7 @@ void perform_targetted_hostile_fast(Field* fd, CardStatus* src, const SkillSpec&
 
                 // wtf?
                 default:
-                    __builtin_unreachable();
+                    //__builtin_unreachable();
                 }
 
                 // skip illegal target

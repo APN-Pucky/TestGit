@@ -26,6 +26,7 @@
 #include <string>
 #include <tuple>
 #include <vector>
+#include <numeric>
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>
@@ -1294,7 +1295,7 @@ void hill_climbing(unsigned num_min_iterations, unsigned num_iterations, Deck* d
         // skip unavailable cards anyway when ownedcards is used
         if (use_owned_cards && !(card->m_category == CardCategory::dominion_alpha) && !is_owned_or_can_be_fused(card))
         {
-			continue;
+		continue;
         }
 
         // enqueue candidate according to category & type
