@@ -41,10 +41,15 @@ build_script:
 test_script:
   - cmd: main.exe -version
 
+artifacts:
+  - path: main.exe
+    name: main
+
 deploy:
   provider: Github
   auth_token:
     secure: 2ep5AcGb2Wl/vxhuoj8sYg/pTrcMmyChrOaS/BEytYqpPNB49lmkNVRrFpYB3KkL
+  artifact: main
   draft: false
   prerelease: false
   on:
