@@ -24,17 +24,17 @@ before_build:
   - mkdir build
 
 build_script:
-        #- cd build
  # =VERSION
-  - cmd: C:\MinGW\bin\make.exe 
-    #- mv Debug/main.exe ../
+  - mkdir build
+  - cd build
+  - cmake ..
+  - cmake --build . 
   - cmd: dir
   - cd ..
   - cmd: dir
 
 test_script:
-  - cmd: main.exe
-  - cmd: main.exe -version
+  - cmd: HelloWorld.exe
 
 deploy:
   provider: Github
