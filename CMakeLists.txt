@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 set(Boost_INCLUDE_DIR "C:/Libraries/boost_1_59_0")
 #set(BIT "32" CACHE STRING "")
-ifeq "$(BIT)" "64"
+if ("$(BIT)" STRQEUAL "64")
 	set(Boost_LIBRARY_DIR "C:/Libraries/boost_1_59_0/lib64-msvc-14.0")
 else
 	set(Boost_LIBRARY_DIR "C:/Libraries/boost_1_59_0/lib32-msvc-14.0")
