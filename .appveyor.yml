@@ -2,7 +2,9 @@ version: "{build}"
 
 os: Visual Studio 2015
 
-platform: x64
+platform: 
+  - x64
+  - Win32
   
 
 environment:
@@ -34,6 +36,7 @@ build_script:
   - cmd: cmake -G "%CMAKE_GENERATOR_NAME%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" ..
   - cmd: cmake --build . 
   - mv Debug/main.exe ../
+  - cmd: if "%platform%"=="Win32" mv main.exe main_x86.exe
   - cmd: dir
   - cd ..
   - cmd: dir
@@ -44,12 +47,16 @@ test_script:
 artifacts:
   - path: main.exe
     name: main
+  - path: main_x86.exe
+    name: main_x86
 
 deploy:
   provider: Github
   auth_token:
     secure: 2ep5AcGb2Wl/vxhuoj8sYg/pTrcMmyChrOaS/BEytYqpPNB49lmkNVRrFpYB3KkL
-  artifact: main
+  artifact: 
+    - main
+    - main_x86
   draft: false
   prerelease: false
   on:
