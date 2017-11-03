@@ -8,7 +8,8 @@ platform: Win32
 environment:
   MSVC_DEFAULT_OPTIONS: ON
   BOOST_ROOT: C:\Libraries\boost_1_59_0
-  BOOST_LIBRARYDIR: C:\Libraries\boost_1_59_0\lib32-msvc-14.0
+  BOOST_LIBRARYDIR_32: C:\Libraries\boost_1_59_0\lib32-msvc-14.0
+  BOOST_LIBRARYDIR_64: C:\Libraries\boost_1_59_0\lib64-msvc-14.0
 
 init:
   - cmd: cmake --version
@@ -26,7 +27,10 @@ before_build:
 build_script:
         # =VERSION
   - cd build
-  - set CMAKE_GENERATOR_NAME=Visual Studio 14 2015
+  - cmd: if "%platform%"=="Win32" set CMAKE_GENERATOR_NAME=Visual Studio 14 2015
+  - cmd: if "%platform%"=="x64" set CMAKE_GENERATOR_NAME=Visual Studio 14 2015 Win64
+  - cmd: if "%platform%"=="Win32" set BOOST_LIBRARYDIR="%BOOST_LIBRARYDIR_32%"
+  - cmd: if "%platform%"=="x64" set BOOST_LIBRARYDIR="%BOOST_LIBRARYDIR_64%"
   - cmd: cmake -G "%CMAKE_GENERATOR_NAME%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" ..
   - cmd: cmake --build . 
   - mv Debug/main.exe ../
