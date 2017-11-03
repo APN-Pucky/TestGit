@@ -28,13 +28,13 @@ build_script:
   - cd build
   - cmake ..
   - cmake --build . 
-  - mv Debug/HelloWorld.exe ../
+  - mv Debug/main.exe ../
   - cmd: dir
   - cd ..
   - cmd: dir
 
 test_script:
-  - cmd: HelloWorld.exe
+  - cmd: main.exe -version
 
 deploy:
   provider: Github
