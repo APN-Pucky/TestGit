@@ -12,7 +12,7 @@ if [ "$TU_PLATFORM" = "windows64" ]; then
     MXE_TARGET=x86_64-w64-mingw32.static
 fi
 
-${MXE_DIR}/usr/bin/${MXE_TARGET}-cmake . -Bbuild-dir -DVERSION:STRING="${APPVEYOR_REPO_TAG_NAME}-build-${APPVEYOR_BUILD_NUMER}"
+${MXE_DIR}/usr/bin/${MXE_TARGET}-cmake . -Bbuild-dir -DVERSION:STRING="${TRAVIS_TAG}-build-${TRAVIS_BUILD_NUMBER}"
 cmake --build build-dir 
 
 set +xue

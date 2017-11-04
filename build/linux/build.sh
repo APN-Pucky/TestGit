@@ -1,8 +1,8 @@
 #!/bin/bash
 
 set -xue
-
-cmake . -Bbuild-dir -DVERSION:STRING="${APPVEYOR_REPO_TAG_NAME}-build-${APPVEYOR_BUILD_NUMER}"
+//$TRAVIS_TAG-build-$TRAVIS_BUILD_NUMBER
+cmake . -Bbuild-dir -DVERSION:STRING="${TRAVIS_TAG}-build-${TRAVIS_BUILD_NUMBER}"
 cmake --build build-dir
 
 set +xue
