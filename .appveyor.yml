@@ -4,7 +4,6 @@ os: Visual Studio 2015
 
 platform: 
   - x64
-  - Win32
   
 
 environment:
@@ -13,9 +12,9 @@ environment:
   BOOST_LIBRARYDIR_32: C:\Libraries\boost_1_59_0\lib32-msvc-14.0
   BOOST_LIBRARYDIR_64: C:\Libraries\boost_1_59_0\lib64-msvc-14.0
 
-init:
-  - cmd: cmake --version
-  - cmd: msbuild /version
+  #init:
+  #- cmd: cmake --version
+  #- cmd: msbuild /version
 
 clone_folder: C:\projects\testgit
 
@@ -24,23 +23,19 @@ branches:
     - gh-pages
 
 before_build:
-  - mkdir build
+        #- cmd: dir %BOOST_ROOT%\lib
+      #- cmd: dir %BOOST_LIBRARYDIR_32%
+    - cmd: dir C:\mingw-w64\i686-5.3.0-posix-dwarf-rt_v4-rev0\mingw32
+    - cmd: set PATH=C:\mingw-w64\i686-5.3.0-posix-dwarf-rt_v4-rev0\mingw32\bin;%PATH%
+    - cmd: set CPLUS_INCLUDE_PATH=%BOOST_ROOT%;%BOOST_LIBRARYDIR_32%
+    - cmd: mingw32-make.exe -
+    - cmd: dir obj
+    - cmd: g++ "-LD:C:\\Libraries\\boost_1_59_0\\lib64-msvc-14.0" "-LD:C:\\Libraries\\boost_1_59_0" -o main.exe obj/tyrant_optimize.o obj/read.o obj/sim.o obj/cards.o obj/xml.o obj/deck.o obj/tyrant.o
+
+    - cmd: g++.exe -Wall -Werror -std=gnu++11 -Ofast -o obj/sim.o sim.cpp
 
 build_script:
         # =VERSION
-  - cd build
-  - cmd: if "%platform%"=="Win32" set CMAKE_GENERATOR_NAME=Visual Studio 14 2015
-  - cmd: if "%platform%"=="x64" set CMAKE_GENERATOR_NAME=Visual Studio 14 2015 Win64
-  - cmd: if "%platform%"=="Win32" set BOOST_LIBRARYDIR="%BOOST_LIBRARYDIR_32%"
-  - cmd: if "%platform%"=="x64" set BOOST_LIBRARYDIR="%BOOST_LIBRARYDIR_64%"
-  - cmd: if "%platform%"=="Win32" cmake -G "%CMAKE_GENERATOR_NAME%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DBIT:STRING=32 -DVERSION:STRING="%APPVEYOR_REPO_TAG_NAME%-build-%APPVEYOR_BUILD_NUMER%" ..
-  - cmd: if "%platform%"=="x64" cmake -G "%CMAKE_GENERATOR_NAME%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DBIT:STRING=64 -DVERSION:STRING="%APPVEYOR_REPO_TAG_NAME%-build-%APPVEYOR_BUILD_NUMBER%" ..
-  - cmd: cmake --build . 
-  - mv Debug/tuo.exe ../
-  - cmd: dir
-  - cd ..
-  - cmd: dir
-  - cmd: if "%platform%"=="Win32" mv tuo.exe tuo_x86.exe
 
 test_script:
   - cmd: if "%platform%"=="Win32" tuo_x86.exe -version
