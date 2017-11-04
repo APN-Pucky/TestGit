@@ -1,21 +1,21 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.6)
+# This file is part of MXE. See LICENSE.md for licensing information.
+
+# partial module - included by src/cmake/CMakeLists.txt
+
+#set(TGT test-${PKG}-cmake)
 set( CMAKE_CXX_STANDARD 11 )
-set(Boost_INCLUDE_DIR "C:/Libraries/boost_1_59_0")
-#set(BIT "32" CACHE STRING "")
-if ("${BIT}" STREQUAL "64")
-	set(Boost_LIBRARY_DIR "C:/Libraries/boost_1_59_0/lib64-msvc-14.0")
-else()
-	set(Boost_LIBRARY_DIR "C:/Libraries/boost_1_59_0/lib32-msvc-14.0")
-endif()
 add_definitions(-DTYRANT_OPTIMIZER_VERSION="${VERSION}" -DNDEBUG -DNQUEST)
-#FIND_PACKAGE( Boost 1.59 COMPONENTS system filesystem REQUIRED )
-#find_package(Boost COMPONENTS system filesystem REQUIRED)
-
-file(GLOB_RECURSE TUO_SOURCES "*.cpp")
-
-include_directories("./" ${Boost_INCLUDE_DIR})
-link_directories(${Boost_LIBRARY_DIR})
 
 project(tuo)
+file(GLOB TUO_SOURCES "*.cpp")
+
+enable_language(CXX)
 add_executable(tuo ${TUO_SOURCES})
+
+find_package(Boost EXACT COMPONENTS system thread filesystem regex REQUIRED)
+
 target_link_libraries(tuo ${Boost_LIBRARIES})
+
+#install(TARGETS ${TGT} DESTINATION bin)
+
