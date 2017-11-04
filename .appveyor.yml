@@ -24,12 +24,14 @@ branches:
 
 before_build:
     - cmd: dir %BOOST_ROOT%
+    - cmd: dir %BOOST_LIBRARYDIR_32%
     - cmd: dir C:\MinGW
+    - cmd: dir C:\MinGW\include
     - cmd: dir C:\MinGW\bin
     - cmd: set PATH=C:\MinGW\bin;%PATH%
     - cmd: set CPLUS_INCLUDE_PATH=C:\MinGW
-    - cmd: make -v
-    - cmd: g++ -v
+    - cmd: make.exe -v
+    - cmd: g++.exe -v
 
 build_script:
         # =VERSION
