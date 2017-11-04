@@ -38,7 +38,7 @@ script:
   - echo "NOP"
 
 before_deploy:
-  - source build-dir/package.sh
+  - source build/package.sh
 
 deploy:
   provider: releases
