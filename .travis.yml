@@ -13,7 +13,7 @@ matrix:
    #   compiler: gcc
 
     - env: 
-        - TUO_PLATFORM='windows'
+        - TUO_PLATFORM='windowsXX'
         - TUO_FILE_32='tuo_x86.exe'
         - TUO_FILE_64='tuo.exe'
       os: linux
