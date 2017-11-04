@@ -12,9 +12,9 @@ environment:
   BOOST_LIBRARYDIR_32: C:\Libraries\boost_1_59_0\lib32-msvc-14.0
   BOOST_LIBRARYDIR_64: C:\Libraries\boost_1_59_0\lib64-msvc-14.0
 
-init:
-  - cmd: cmake --version
-  - cmd: msbuild /version
+  #init:
+  #- cmd: cmake --version
+  #- cmd: msbuild /version
 
 clone_folder: C:\projects\testgit
 
