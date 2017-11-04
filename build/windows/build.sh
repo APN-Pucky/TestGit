@@ -8,7 +8,7 @@ if [ "$TUO_PLATFORM" = "windows32" ]; then
     MXE_TARGET=i686-w64-mingw32.static
 fi
 
-if [ "$TU_PLATFORM" = "windows64" ]; then
+if [ "$TUO_PLATFORM" = "windows64" ]; then
     MXE_TARGET=x86_64-w64-mingw32.static
 fi
 
