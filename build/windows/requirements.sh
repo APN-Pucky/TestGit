@@ -13,6 +13,7 @@ sudo apt-get update
 
 
 MXE_TARGET=i686-w64-mingw32.static
+MXE2_TARGET=$(echo "$MXE_TARGET" | sed 's/_/-/g')
 sudo apt-get --yes install \
     mxe-${MXE2_TARGET}-boost
 
