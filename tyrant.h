@@ -1,7 +1,7 @@
 #ifndef TYRANT_H_INCLUDED
 #define TYRANT_H_INCLUDED
 
-//#define TYRANT_OPTIMIZER_VERSION "2.56.0"
+#define TYRANT_OPTIMIZER_VERSION "2.56.0"
 
 #include <string>
 #include <sstream>
@@ -391,12 +391,6 @@ inline uint8_t byte_bits_count(register uint8_t i)
     return (i + (i >> 4)) & 0x0F;
 }
 
-#if defined(__GNUC__) || defined(__ICL) || defined(__clang__)
-#define EXPECT(x, y) (__builtin_expect((x),(y)))
-#else
-#define EXPECT(x, y) (x)
-#endif
-
 //---------------------- Debugging stuff ---------------------------------------
 extern signed debug_print;
 extern unsigned debug_cached;
@@ -405,7 +399,7 @@ extern std::string debug_str;
 #ifndef NDEBUG
 #define _DEBUG_MSG(v, format, args...)                                  \
     {                                                                   \
-        if(EXPECT(debug_print >= v, false))                   \
+        if(__builtin_expect(debug_print >= v, false))                   \
         {                                                               \
             if(debug_line) { printf("%i - " format, __LINE__ , ##args); }      \
             else if(debug_cached) {                                     \
@@ -419,7 +413,7 @@ extern std::string debug_str;
     }
 #define _DEBUG_SELECTION(format, args...)                               \
     {                                                                   \
-        if(EXPECT(debug_print >= 2, 0))                       \
+        if(__builtin_expect(debug_print >= 2, 0))                       \
         {                                                               \
             _DEBUG_MSG(2, "Possible targets of " format ":\n", ##args); \
             fd->print_selection_array();                                \

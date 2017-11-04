@@ -200,7 +200,7 @@ void Card::add_skill(Skill::Trigger trigger, Skill::Skill id, unsigned x, Factio
         break;
     default:
         _DEBUG_ASSERT(false);
-        //__builtin_unreachable();
+        __builtin_unreachable();
     }
     assert(storage);
     // remove previous copy of such skill.id
