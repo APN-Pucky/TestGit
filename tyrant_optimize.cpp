@@ -26,7 +26,6 @@
 #include <string>
 #include <tuple>
 #include <vector>
-#include <numeric>
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>
@@ -704,7 +703,7 @@ struct SimulationData
 #endif
                 your_bg_effects, enemy_bg_effects, your_bg_skills, enemy_bg_skills);
             Results<uint64_t> result(play(&fd));
-            if (EXPECT(mode_open_the_deck, false))
+            if (__builtin_expect(mode_open_the_deck, false))
             {
                 // are there remaining (unopened) cards?
                 if (fd.players[1]->deck->shuffled_cards.size())
@@ -829,7 +828,11 @@ public:
     }
 };
 //------------------------------------------------------------------------------
-void thread_evaluate(boost::barrier& main_barrier, boost::mutex& shared_mutex, SimulationData& sim, const Process& p, unsigned thread_id)
+void thread_evaluate(boost::barrier& main_barrier,
+                     boost::mutex& shared_mutex,
+                     SimulationData& sim,
+                     const Process& p,
+                     unsigned thread_id)
 {
     while (true)
     {
@@ -1291,7 +1294,7 @@ void hill_climbing(unsigned num_min_iterations, unsigned num_iterations, Deck* d
         // skip unavailable cards anyway when ownedcards is used
         if (use_owned_cards && !(card->m_category == CardCategory::dominion_alpha) && !is_owned_or_can_be_fused(card))
         {
-		continue;
+			continue;
         }
 
         // enqueue candidate according to category & type
@@ -1330,7 +1333,8 @@ void hill_climbing(unsigned num_min_iterations, unsigned num_iterations, Deck* d
         {
             for (const Card* dom_card : alpha_dominion_candidates)
             {
-                std::cout << " ** next Alpha Dominion candidate: " << dom_card->m_name << " ($: " << alpha_dominion_cost(dom_card) << ")" << std::endl;
+                std::cout << " ** next Alpha Dominion candidate: " << dom_card->m_name
+                    << " ($: " << alpha_dominion_cost(dom_card) << ")" << std::endl;
             }
         }
     }
@@ -1398,7 +1402,9 @@ void hill_climbing(unsigned num_min_iterations, unsigned num_iterations, Deck* d
                 { break; }
                 if (alpha_dominion_candidate == best_alpha_dominion)
                 { continue; }
-                deck_has_been_improved |= try_improve_deck(d1, -1, -1, alpha_dominion_candidate, best_commander, best_alpha_dominion, best_cards, best_score, best_gap, best_deck, evaluated_decks, zero_results, skipped_simulations, proc);
+                deck_has_been_improved |= try_improve_deck(d1, -1, -1, alpha_dominion_candidate,
+                    best_commander, best_alpha_dominion, best_cards, best_score, best_gap, best_deck,
+                    evaluated_decks, zero_results, skipped_simulations, proc);
             }
             // Now that all alpha dominions are evaluated, take the best one
             d1->commander = best_commander;
@@ -1421,7 +1427,9 @@ void hill_climbing(unsigned num_min_iterations, unsigned num_iterations, Deck* d
                         :
                         (from_slot == best_cards.size())) // void -> void
                 { continue; }
-                deck_has_been_improved |= try_improve_deck(d1, from_slot, to_slot, card_candidate, best_commander, best_alpha_dominion, best_cards, best_score, best_gap, best_deck, evaluated_decks, zero_results, skipped_simulations, proc);
+                deck_has_been_improved |= try_improve_deck(d1, from_slot, to_slot, card_candidate,
+                    best_commander, best_alpha_dominion, best_cards, best_score, best_gap, best_deck,
+                    evaluated_decks, zero_results, skipped_simulations, proc);
             }
             if (best_score.points - target_score > -1e-9)
             { break; }

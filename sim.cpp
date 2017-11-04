@@ -112,10 +112,10 @@ inline void Field::finalize_action()
 {
     for (auto unit_it = damaged_units_to_times.begin(); unit_it != damaged_units_to_times.end(); ++ unit_it)
     {
-        if (EXPECT(!unit_it->second, false))
+        if (__builtin_expect(!unit_it->second, false))
         { continue; }
         CardStatus * dmg_status = unit_it->first;
-        if (EXPECT(!is_alive(dmg_status), false))
+        if (__builtin_expect(!is_alive(dmg_status), false))
         { continue; }
         unsigned barrier_base = dmg_status->skill(Skill::barrier);
         if (barrier_base)
@@ -224,7 +224,7 @@ inline void CardStatus::set(const Card& card)
 inline unsigned CardStatus::attack_power() const
 {
     signed attack = calc_attack_power();
-	if(EXPECT(attack <0,false))
+	if(__builtin_expect(attack <0,false))
 	{
 		std::cout << m_card->m_name << " " << m_card->m_attack  << " " << attack << " " << m_temp_attack_buff << " " << m_corroded_weakened << std::endl;	
 	}
@@ -440,7 +440,7 @@ void prepend_on_death(Field* fd)
             // Skill: Avenge
             const unsigned host_idx = status->m_index;
             unsigned from_idx, till_idx;
-            if (EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::bloodvengeance], false))
+            if (__builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::bloodvengeance], false))
             {
                 // Passive BGE Blood Vengeance: scan all assaults for Avenge
                 from_idx = 0;
@@ -461,7 +461,7 @@ void prepend_on_death(Field* fd)
 
                 // Passive BGE Blood Vengeance: use half value rounded up
                 // (for distance > 1, i. e. non-standard Avenge triggering)
-                if (EXPECT((std::abs((signed)from_idx - (signed)host_idx) > 1), false))
+                if (__builtin_expect((std::abs((signed)from_idx - (signed)host_idx) > 1), false))
                 {
                     avenge_value = (avenge_value + 1) / 2;
                 }
@@ -474,7 +474,7 @@ void prepend_on_death(Field* fd)
             }
 
             // Passive BGE: Virulence
-            if (EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::virulence], false))
+            if (__builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::virulence], false))
             {
                 if (status->m_index != last_index + 1)
                 {
@@ -517,7 +517,7 @@ void prepend_on_death(Field* fd)
         }
 
         // Passive BGE: Revenge
-        if (EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::revenge], false))
+        if (__builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::revenge], false))
         {
             if (fd->bg_effects[fd->tapi][PassiveBGE::revenge] < 0)
                 throw std::runtime_error("BGE Revenge: value must be defined & positive");
@@ -552,7 +552,7 @@ void resolve_skill(Field* fd)
         auto& status(std::get<0>(skill_instance));
         const auto& ss(std::get<1>(skill_instance));
         fd->skill_queue.pop_front();
-        if (EXPECT(status->m_card->m_skill_trigger[ss.id] == Skill::Trigger::activate, true))
+        if (__builtin_expect(status->m_card->m_skill_trigger[ss.id] == Skill::Trigger::activate, true))
         {
             if (!is_alive(status))
             {
@@ -641,7 +641,7 @@ void evaluate_skills(Field* fd, CardStatus* status, const std::vector<SkillSpec>
                 if (attack_phase(fd))
                 {
                     *attacked = true;
-                    if (EXPECT(fd->end, false)) { break; }
+                    if (__builtin_expect(fd->end, false)) { break; }
                 }
             }
             else
@@ -721,13 +721,13 @@ struct PlayCard
 		for (CardStatus* status_i : fd->tap->assaults.m_indirect)
 		{
 			if (status_i == status || !is_alive(status_i)) { continue; } // except itself
-			std::cout << status_description(status_i).c_str();
+			//std::cout << status_description(status_i).c_str();
 			_DEBUG_ASSERT(is_alive(status_i));
             if (bge_megamorphosis || (status_i->m_card->m_faction == card->m_faction))
             {
                 ++ same_faction_cards_count;
                 unsigned allegiance_value = status_i->skill(Skill::allegiance);
-                if (EXPECT(allegiance_value, false) && !status->m_summoned)
+                if (__builtin_expect(allegiance_value, false) && !status->m_summoned)
                 {
                     _DEBUG_MSG(1, "%s activates Allegiance %u\n", status_description(status_i).c_str(), allegiance_value);
                     if (! status_i->m_sundered)
@@ -735,7 +735,7 @@ struct PlayCard
                     status_i->ext_hp(allegiance_value);
                 }
             }
-            if (EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::coldsleep], false)
+            if (__builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::coldsleep], false)
                 && status_i->m_protected_stasis && can_be_healed(status_i))
             {
                 unsigned bge_value = (status_i->m_protected_stasis + 1) / 2;
@@ -746,13 +746,13 @@ struct PlayCard
 
 		// Setup faction marks (bitmap) for stasis (skill Stasis / Passive BGE TemporalBacklash)
 		// unless Passive BGE Megamorphosis is enabled
-        if (EXPECT(!bge_megamorphosis, true))
+        if (__builtin_expect(!bge_megamorphosis, true))
 		{
             played_faction_mask = (1u << card->m_faction);
 
             // do played card have stasis? mark this faction for stasis check
-            if (EXPECT(status->skill(Skill::stasis), false)
-                || EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::temporalbacklash] && status->skill(Skill::counter), false))
+            if (__builtin_expect(status->skill(Skill::stasis), false)
+                || __builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::temporalbacklash] && status->skill(Skill::counter), false))
             {
                 fd->tap->stasis_faction_bitmap |= played_faction_mask;
             }
@@ -760,7 +760,7 @@ struct PlayCard
 
         // Evaluate Passive BGE Oath-of-Loyalty
 		unsigned allegiance_value;
-        if (EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::oath_of_loyalty], false)
+        if (__builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::oath_of_loyalty], false)
 			&& ((allegiance_value = status->skill(Skill::allegiance)) > 0))
         {
             // count structures with same faction (except fortresses, dominions and other non-normal structures)
@@ -788,7 +788,7 @@ struct PlayCard
         //  1. Passive BGE Megamorphosis is enabled
         //  2. current faction is marked for it
         if ((card->m_delay > 0) && (card->m_type == CardType::assault)
-            && EXPECT(bge_megamorphosis || (fd->tap->stasis_faction_bitmap & played_faction_mask), false))
+            && __builtin_expect(bge_megamorphosis || (fd->tap->stasis_faction_bitmap & played_faction_mask), false))
         {
             unsigned stacked_stasis = (bge_megamorphosis || (fd->tap->commander.m_card->m_faction == card->m_faction))
                 ? fd->tap->commander.skill(Skill::stasis)
@@ -829,7 +829,7 @@ struct PlayCard
                             status_description(status_i).c_str(), stacked_stasis);
                     }
 #endif
-                    if (EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::temporalbacklash] && status_i->skill(Skill::counter), false))
+                    if (__builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::temporalbacklash] && status_i->skill(Skill::counter), false))
                     {
                         stacked_stasis += (status_i->skill(Skill::counter) + 1) / 2;
 #ifndef NDEBUG
@@ -849,7 +849,7 @@ struct PlayCard
             }
 #endif
             // no more stasis for current faction: do unmark (if no Passive BGE Megamorphosis)
-            if (EXPECT(!bge_megamorphosis, true) && EXPECT(!stacked_stasis, false))
+            if (__builtin_expect(!bge_megamorphosis, true) && __builtin_expect(!stacked_stasis, false))
 			{
 				fd->tap->stasis_faction_bitmap &= ~played_faction_mask;
 				_DEBUG_MSG(1, "- Stasis [%s]: no more units with stasis\n",
@@ -942,7 +942,7 @@ inline bool skill_check<Skill::overload>(Field* fd, CardStatus* c, CardStatus* r
 template<>
 inline bool skill_check<Skill::jam>(Field* fd, CardStatus* c, CardStatus* ref)
 {
-    if(EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::ironwill], false) && c->has_skill(Skill::armor))return false;
+    if(__builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::ironwill], false) && c->has_skill(Skill::armor))return false;
     // active player performs Jam
     if (fd->tapi == ref->m_player)
     { return is_active_next_turn(c); }
@@ -997,7 +997,7 @@ inline bool skill_check<Skill::drain>(Field* fd, CardStatus* c, CardStatus* ref)
 unsigned remove_absorption(Field* fd, CardStatus* status, unsigned dmg)
 {
 	unsigned remaining_dmg(0);
-	if(EXPECT(status->m_absorption == 0,true))
+	if(__builtin_expect(status->m_absorption == 0,true))
 	{
 		//skip
 	}
@@ -1018,7 +1018,7 @@ unsigned remove_absorption(Field* fd, CardStatus* status, unsigned dmg)
 
 void remove_hp(Field* fd, CardStatus* status, unsigned dmg)
 {
-    if (EXPECT(!dmg, false)) { return; }
+    if (__builtin_expect(!dmg, false)) { return; }
     _DEBUG_ASSERT(is_alive(status));
     _DEBUG_MSG(2, "%s takes %u damage\n", status_description(status).c_str(), dmg);
     status->m_hp = safe_minus(status->m_hp, dmg);
@@ -1045,7 +1045,7 @@ void remove_hp(Field* fd, CardStatus* status, unsigned dmg)
         fd->killed_units.push_back(status);
         ++fd->players[status->m_player]->total_cards_destroyed;
 		if(!status->m_summoned)++fd->players[status->m_player]->total_nonsummon_cards_destroyed;
-        if (EXPECT((status->m_player == 0) && (fd->players[0]->deck->vip_cards.count(status->m_card->m_id)), false))
+        if (__builtin_expect((status->m_player == 0) && (fd->players[0]->deck->vip_cards.count(status->m_card->m_id)), false))
         {
             fd->players[0]->commander.m_hp = 0;
             fd->end = true;
@@ -1331,7 +1331,7 @@ struct PerformAttack
 
         attack_damage<def_cardtype>();
 		
-        if (EXPECT(fd->end, false)) { return att_dmg; }
+        if (__builtin_expect(fd->end, false)) { return att_dmg; }
         damage_dependant_pre_oa<def_cardtype>();
 		
 		on_attacked<def_cardtype>();
@@ -1357,7 +1357,7 @@ struct PerformAttack
             resolve_skill(fd);
 
             // Passive BGE: Counterflux
-            if (EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::counterflux], false)
+            if (__builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::counterflux], false)
                 && (def_cardtype == CardType::assault) && is_alive(def_status))
             {
                 unsigned flux_denominator = (fd->bg_effects[fd->tapi][PassiveBGE::counterflux] > 0)
@@ -1400,7 +1400,7 @@ struct PerformAttack
 #endif
 
             // Passive BGE: EnduringRage
-            if (EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::enduringrage], false))
+            if (__builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::enduringrage], false))
             {
                 unsigned bge_denominator = (fd->bg_effects[fd->tapi][PassiveBGE::enduringrage] > 0)
                     ? (unsigned)fd->bg_effects[fd->tapi][PassiveBGE::enduringrage]
@@ -1418,7 +1418,7 @@ struct PerformAttack
 
         // Passive BGE: Heroism
         unsigned valor_value;
-        if (EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::heroism], false)
+        if (__builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::heroism], false)
             && ((valor_value = att_status->skill(Skill::valor)) > 0)
             && !att_status->m_sundered
             && (def_cardtype == CardType::assault) && (def_status->m_hp <= 0))
@@ -1430,7 +1430,7 @@ struct PerformAttack
 
         // Passive BGE: Devour
         unsigned leech_value;
-        if (EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::devour], false)
+        if (__builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::devour], false)
             && ((leech_value = att_status->skill(Skill::leech) + att_status->skill(Skill::refresh)) > 0)
             && (def_cardtype == CardType::assault))
         {
@@ -1451,7 +1451,7 @@ struct PerformAttack
 
         // Skill: Subdue
         unsigned subdue_value = def_status->skill(Skill::subdue);
-        if (EXPECT(subdue_value, false))
+        if (__builtin_expect(subdue_value, false))
         {
             _DEBUG_MSG(1, "%s subdues %s by %u\n",
                 status_description(def_status).c_str(),
@@ -1494,7 +1494,7 @@ struct PerformAttack
         {
             // Skill: Legion
             unsigned legion_base = att_status->skill(Skill::legion);
-            if (EXPECT(legion_base, false))
+            if (__builtin_expect(legion_base, false))
             {
                 bool bge_megamorphosis = fd->bg_effects[fd->tapi][PassiveBGE::megamorphosis];
                 legion_value += (att_status->m_index > 0) && is_alive(&att_assaults[att_status->m_index - 1])
@@ -1513,7 +1513,7 @@ struct PerformAttack
 
             // Skill: Coalition
             unsigned coalition_base = att_status->skill(Skill::coalition);
-            if (EXPECT(coalition_base, false))
+            if (__builtin_expect(coalition_base, false))
             {
                 uint8_t factions_bitmap = 0;
                 for (CardStatus * status : att_assaults.m_indirect)
@@ -1622,7 +1622,7 @@ struct PerformAttack
         }
 #endif
         // Passive BGE: Brigade
-        if (EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::brigade] && legion_value, false)
+        if (__builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::brigade] && legion_value, false)
             && can_be_healed(att_status))
         {
             _DEBUG_MSG(1, "Brigade: %s heals itself for %u\n",
@@ -1795,7 +1795,7 @@ bool attack_phase(Field* fd)
     }
 
     // Passive BGE: Bloodlust
-    if (EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::bloodlust], false)
+    if (__builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::bloodlust], false)
         && !fd->assault_bloodlusted && (att_dmg > 0))
     {
         fd->bloodlust_value += fd->bg_effects[fd->tapi][PassiveBGE::bloodlust];
@@ -1915,7 +1915,7 @@ inline bool skill_predicate<Skill::overload>(Field* fd, CardStatus* src, CardSta
         // unit with an activation helpful skill is valid target only when there are inhibited units
         if ((evolved_skill_id != Skill::mend)
             && is_activation_helpful_skill(evolved_skill_id)
-            && EXPECT(!inhibited_searched, true))
+            && __builtin_expect(!inhibited_searched, true))
         {
             for (const auto & c: fd->players[dst->m_player]->assaults.m_indirect)
             {
@@ -1932,7 +1932,7 @@ template<>
 inline bool skill_predicate<Skill::rally>(Field* fd, CardStatus* src, CardStatus* dst, const SkillSpec& s)
 {
     return skill_check<Skill::rally>(fd, dst, src) // basic skill check
-        && (EXPECT((fd->tapi == dst->m_player), true) // is target on the active side?
+        && (__builtin_expect((fd->tapi == dst->m_player), true) // is target on the active side?
             ? is_active(dst) && !has_attacked(dst) // normal case
             : is_active_next_turn(dst) // diverted case / on-death activation
         )
@@ -1942,7 +1942,7 @@ inline bool skill_predicate<Skill::rally>(Field* fd, CardStatus* src, CardStatus
 template<>
 inline bool skill_predicate<Skill::enrage>(Field* fd, CardStatus* src, CardStatus* dst, const SkillSpec& s)
 {
-    return (EXPECT((fd->tapi == dst->m_player), true) // is target on the active side?
+    return (__builtin_expect((fd->tapi == dst->m_player), true) // is target on the active side?
             ? is_active(dst) && (dst->m_step == CardStep::none) // normal case
             : is_active_next_turn(dst) // on-death activation
         )
@@ -1960,11 +1960,11 @@ inline bool skill_predicate<Skill::rush>(Field* fd, CardStatus* src, CardStatus*
 template<>
 inline bool skill_predicate<Skill::weaken>(Field* fd, CardStatus* src, CardStatus* dst, const SkillSpec& s)
 {
-    if(EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::ironwill], false) && dst->has_skill(Skill::armor))return false;
+    if(__builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::ironwill], false) && dst->has_skill(Skill::armor))return false;
     if (!dst->attack_power()) { return false; }
 
     // active player performs Weaken (normal case)
-    if (EXPECT((fd->tapi == src->m_player), true))
+    if (__builtin_expect((fd->tapi == src->m_player), true))
     { return is_active_next_turn(dst); }
 
     // APN - On-Attacked/Death don't target the attacking card  
@@ -2012,7 +2012,7 @@ inline void perform_skill<Skill::heal>(Field* fd, CardStatus* src, CardStatus* d
     dst->add_hp(s.x);
 
     // Passive BGE: ZealotsPreservation
-    if (EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::zealotspreservation], false)
+    if (__builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::zealotspreservation], false)
         && (src->m_card->m_type == CardType::assault))
     {
         unsigned bge_value = (s.x + 1) / 2;
@@ -2073,7 +2073,7 @@ inline void perform_skill<Skill::enrage>(Field* fd, CardStatus* src, CardStatus*
 {
     dst->m_enraged += s.x;
     // Passive BGE: Furiosity
-    if (EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::furiosity], false)
+    if (__builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::furiosity], false)
         && can_be_healed(dst))
     {
         unsigned bge_value = s.x;
@@ -2299,7 +2299,7 @@ inline bool check_and_perform_skill(Field* fd, CardStatus* src, CardStatus* dst,
 #endif
 )
 {
-    if (EXPECT(skill_check<skill_id>(fd, dst, src), true))
+    if (__builtin_expect(skill_check<skill_id>(fd, dst, src), true))
     {
 #ifndef NQUEST
         if (src->m_player == 0 && ! has_counted_quest)
@@ -2400,7 +2400,7 @@ CardStatus* check_and_perform_summon(Field* fd, CardStatus* src)
                 summoned_card->m_id, card_description(fd->cards, summoned_card).c_str(),
                 summoned_card->m_type);
             _DEBUG_ASSERT(false);
-            //__builtin_unreachable();
+            __builtin_unreachable();
         }
     }
     return nullptr;
@@ -2490,7 +2490,7 @@ void perform_targetted_allied_fast(Field* fd, CardStatus* src, const SkillSpec& 
     }
 
     // Passive BGE: Divert
-    if (EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::divert], false)
+    if (__builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::divert], false)
         && (num_inhibited > 0))
     {
         SkillSpec diverted_ss = s;
@@ -2556,7 +2556,7 @@ void perform_targetted_hostile_fast(Field* fd, CardStatus* src, const SkillSpec&
     for (CardStatus * dst: selection_array)
     {
         // TurningTides
-        if (EXPECT(has_turningtides, false))
+        if (__builtin_expect(has_turningtides, false))
         {
             old_attack = dst->attack_power();
         }
@@ -2569,7 +2569,7 @@ void perform_targetted_hostile_fast(Field* fd, CardStatus* src, const SkillSpec&
         ))
         {
             // TurningTides: get max attack decreasing
-            if (EXPECT(has_turningtides, false))
+            if (__builtin_expect(has_turningtides, false))
             {
                 turningtides_value = std::max(turningtides_value, safe_minus(old_attack, dst->attack_power()));
             }
@@ -2585,7 +2585,7 @@ void perform_targetted_hostile_fast(Field* fd, CardStatus* src, const SkillSpec&
     }
 
     // apply TurningTides
-    if (EXPECT(has_turningtides, false) && (turningtides_value > 0))
+    if (__builtin_expect(has_turningtides, false) && (turningtides_value > 0))
     {
         SkillSpec ss_rally{Skill::rally, turningtides_value, allfactions, 0, 0, Skill::no_skill, Skill::no_skill, s.all, 0,};
         _DEBUG_MSG(1, "TurningTides %u!\n", turningtides_value);
@@ -2637,7 +2637,7 @@ void perform_targetted_hostile_fast(Field* fd, CardStatus* src, const SkillSpec&
 
                 // wtf?
                 default:
-                    //__builtin_unreachable();
+                    __builtin_unreachable();
                 }
 
                 // skip illegal target
@@ -2656,7 +2656,7 @@ void perform_targetted_hostile_fast(Field* fd, CardStatus* src, const SkillSpec&
                 }
 
                 // TurningTides
-                if (EXPECT(has_turningtides, false))
+                if (__builtin_expect(has_turningtides, false))
                 {
                     old_attack = target_status->attack_power();
                 }
@@ -2669,7 +2669,7 @@ void perform_targetted_hostile_fast(Field* fd, CardStatus* src, const SkillSpec&
                 ++ revenged_count;
 
                 // revenged TurningTides: get max attack decreasing
-                if (EXPECT(has_turningtides, false))
+                if (__builtin_expect(has_turningtides, false))
                 {
                     turningtides_value = std::max(turningtides_value, safe_minus(old_attack, target_status->attack_power()));
                 }
@@ -2680,7 +2680,7 @@ void perform_targetted_hostile_fast(Field* fd, CardStatus* src, const SkillSpec&
                 ++ pb_status->m_paybacked;
 
                 // apply TurningTides
-                if (EXPECT(has_turningtides, false) && (turningtides_value > 0))
+                if (__builtin_expect(has_turningtides, false) && (turningtides_value > 0))
                 {
                     SkillSpec ss_rally{Skill::rally, turningtides_value, allfactions, 0, 0, Skill::no_skill, Skill::no_skill, false, 0,};
                     _DEBUG_MSG(1, "Paybacked TurningTides %u!\n", turningtides_value);
@@ -2707,7 +2707,7 @@ void perform_targetted_hostile_fast(Field* fd, CardStatus* src, const SkillSpec&
             }
 
             // TurningTides
-            if (EXPECT(has_turningtides, false))
+            if (__builtin_expect(has_turningtides, false))
             {
                 old_attack = src->attack_power();
             }
@@ -2719,7 +2719,7 @@ void perform_targetted_hostile_fast(Field* fd, CardStatus* src, const SkillSpec&
             ++ pb_status->m_paybacked;
 
             // handle paybacked TurningTides
-            if (EXPECT(has_turningtides, false))
+            if (__builtin_expect(has_turningtides, false))
             {
                 turningtides_value = std::max(turningtides_value, safe_minus(old_attack, src->attack_power()));
                 if (turningtides_value > 0)
@@ -2778,7 +2778,7 @@ Results<uint64_t> play(Field* fd)
         ai = opponent(ai);
     }
 
-    while(EXPECT(fd->turn <= turn_limit && !fd->end, true))
+    while(__builtin_expect(fd->turn <= turn_limit && !fd->end, true))
     {
         fd->current_phase = Field::playcard_phase;
         // Initialize stuff, remove dead cards
@@ -2802,14 +2802,14 @@ Results<uint64_t> play(Field* fd)
             fd->prepare_action();
 
             // Play selected card
-            CardStatus* played_status = nullptr;
+            //CardStatus* played_status = nullptr;
             switch (played_card->m_type)
             {
             case CardType::assault:
-                played_status = PlayCard(played_card, fd, fd->tapi, &fd->tap->commander).op<CardType::assault>();
+                PlayCard(played_card, fd, fd->tapi, &fd->tap->commander).op<CardType::assault>();
                 break;
             case CardType::structure:
-                played_status = PlayCard(played_card, fd, fd->tapi, &fd->tap->commander).op<CardType::structure>();
+                PlayCard(played_card, fd, fd->tapi, &fd->tap->commander).op<CardType::structure>();
                 break;
             case CardType::commander:
             case CardType::num_cardtypes:
@@ -2819,18 +2819,18 @@ Results<uint64_t> play(Field* fd)
                 break;
             }
             resolve_skill(fd); // resolve postponed skills recursively
-	    status_description(played_status);
-	//		_DEBUG_MSG(3,"Card played: %s", status_description(played_status).c_str());
+			//status_description(played_status)
+			//_DEBUG_MSG(3,"Card played: %s", status_description(played_status).c_str());
             // End 'Play Card' phase action
             fd->finalize_action();
 
             
             
         }
-        if (EXPECT(fd->end, false)) { break; }
+        if (__builtin_expect(fd->end, false)) { break; }
 
         // Evaluate Passive BGE Heroism skills
-        if (EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::heroism], false))
+        if (__builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::heroism], false))
         {
             for (CardStatus * dst: fd->tap->assaults.m_indirect)
             {
@@ -2845,7 +2845,7 @@ Results<uint64_t> play(Field* fd)
                     -- dst->m_inhibited;
 
                     // Passive BGE: Divert
-                    if (EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::divert], false))
+                    if (__builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::divert], false))
                     {
                         SkillSpec diverted_ss = ss_protect;
                         diverted_ss.y = allfactions;
@@ -2894,12 +2894,12 @@ Results<uint64_t> play(Field* fd)
             resolve_skill(fd);
             fd->finalize_action();
         }
-        if (EXPECT(fd->end, false)) { break; }
+        if (__builtin_expect(fd->end, false)) { break; }
 
         // Evaluate commander
         fd->current_phase = Field::commander_phase;
         evaluate_skills<CardType::commander>(fd, &fd->tap->commander, fd->tap->commander.m_card->m_skills);
-        if (EXPECT(fd->end, false)) { break; }
+        if (__builtin_expect(fd->end, false)) { break; }
 
         // Evaluate structures
         fd->current_phase = Field::structures_phase;
@@ -2928,7 +2928,7 @@ Results<uint64_t> play(Field* fd)
                 _DEBUG_MSG(2, "%s cannot take action.\n", status_description(current_status).c_str());
                 // Passive BGE: HaltedOrders
                 unsigned inhibit_value;
-                if (EXPECT(fd->bg_effects[fd->tapi][PassiveBGE::haltedorders], false)
+                if (__builtin_expect(fd->bg_effects[fd->tapi][PassiveBGE::haltedorders], false)
                     && (current_status->m_delay > 0) // still frozen
                     && (fd->current_ci < fd->tip->assaults.size()) // across slot isn't empty
                     && is_alive(&fd->tip->assaults[fd->current_ci]) // across assault is alive
@@ -2953,8 +2953,8 @@ Results<uint64_t> play(Field* fd)
                 fd->assault_bloodlusted = false;
                 current_status->m_step = CardStep::attacking;
                 evaluate_skills<CardType::assault>(fd, current_status, current_status->m_card->m_skills, &attacked);
-                if (EXPECT(fd->end, false)) { break; }
-                if (EXPECT(!is_alive(current_status), false)) { continue; }
+                if (__builtin_expect(fd->end, false)) { break; }
+                if (__builtin_expect(!is_alive(current_status), false)) { continue; }
             }
             if (current_status->m_corroded_rate)
             {
@@ -2977,7 +2977,7 @@ Results<uint64_t> play(Field* fd)
         }
         fd->current_phase = Field::end_phase;
         turn_end_phase(fd);
-        if (EXPECT(fd->end, false)) { break; }
+        if (__builtin_expect(fd->end, false)) { break; }
         _DEBUG_MSG(1, "TURN %u ends for %s\n", fd->turn, status_description(&fd->tap->commander).c_str());
         std::swap(fd->tapi, fd->tipi);
         std::swap(fd->tap, fd->tip);
