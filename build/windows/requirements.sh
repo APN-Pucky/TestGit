@@ -12,13 +12,12 @@ sudo apt-key adv --keyserver x-hkp://keys.gnupg.net \
 sudo apt-get update
 
 
-if [ "$TUO_PLATFORM" = "windows32" ]; then
-    MXE_TARGET=i686-w64-mingw32.static
-fi
+MXE_TARGET=i686-w64-mingw32.static
+sudo apt-get --yes install \
+    mxe-${MXE2_TARGET}-boost
 
-if [ "$TUO_PLATFORM" = "windows64" ]; then
-    MXE_TARGET=x86-64-w64-mingw32.static
-fi
+
+MXE_TARGET=x86-64-w64-mingw32.static
 
 MXE2_TARGET=$(echo "$MXE_TARGET" | sed 's/_/-/g')
 sudo apt-get --yes install \
