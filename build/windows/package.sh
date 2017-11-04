@@ -3,9 +3,9 @@
 set -xue
 
 
-FILE=tuo_@VERSION@_${TUO_PLATFORM}.exe
+#FILE=tuo_@VERSION@_${TUO_PLATFORM}.exe
 
-cp build-dir/tuo.exe $FILE
+cp build-dir/tuo.exe $TUO_FILE
 
 
 

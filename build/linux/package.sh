@@ -3,9 +3,9 @@
 set -xue
 
 
-DEPLOY_FILE=tuo_@VERSION@_${TUO_PLATFORM}.exe
+#DEPLOY_FILE=tuo_@VERSION@_${TUO_PLATFORM}.exe
 
-cp build-dir/tuo $DEPLOY_FILE
+cp build-dir/tuo $TUO_FILE
 
 
 set +xue
