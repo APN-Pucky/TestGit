@@ -4,15 +4,18 @@ set -xue
 
 MXE_DIR=/usr/lib/mxe
 
-if [ "$TUO_PLATFORM" = "windows32" ]; then
-    MXE_TARGET=i686-w64-mingw32.static
-fi
+MXE_TARGET=i686-w64-mingw32.static
 
-if [ "$TUO_PLATFORM" = "windows64" ]; then
-    MXE_TARGET=x86_64-w64-mingw32.static
-fi
-
-${MXE_DIR}/usr/bin/${MXE_TARGET}-cmake . -Bbuild-dir -DVERSION:STRING="${TRAVIS_TAG}-build-${TRAVIS_BUILD_NUMBER}"
+${MXE_DIR}/usr/bin/${MXE_TARGET}-cmake . -Bbuild-dir -DVERSION:STRING="${TRAVIS_TAG}"
 cmake --build build-dir 
+
+mv build-dir/tuo.exe ../$TUO_FILE_32
+
+MXE_TARGET=x86_64-w64-mingw32.static
+
+${MXE_DIR}/usr/bin/${MXE_TARGET}-cmake . -Bbuild-dir -DVERSION:STRING="${TRAVIS_TAG}"
+cmake --build build-dir 
+
+mv build-dir/tuo.exe ../$TUO_FILE_64
 
 set +xue
