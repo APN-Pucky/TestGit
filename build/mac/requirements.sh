@@ -1,4 +1,5 @@
 #brew update
 #brew install cmake
 #brew install boost
-rvm get stable
+command curl -sSL https://rvm.io/mpapis.asc | gpg --import -;
+rvm get stable;
