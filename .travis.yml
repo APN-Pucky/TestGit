@@ -12,7 +12,7 @@ matrix:
   - env:
     - TUO_PLATFORM='macXX'
     - TUO_FILE_32='tuo_x86.osx'
-    - TUO_FILE_64='tuo.osx'
+    - TUO_FILE_64='tuo_x64.osx'
     os: osx
 before_install:
 - TUO_TARGET="${TUO_PLATFORM::${#TUO_PLATFORM}-2}"
@@ -26,6 +26,7 @@ script:
 - echo "NOP"
 before_deploy:
 - "./update_xml.sh"
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then chmod 755 tuo.osx; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp tuo.osx $TUO_FILE_32; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp tuo.osx $TUO_FILE_64; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export TUO_FILE_ZIP="tuo.${TRAVIS_TAG}_32+64_bit_osx.zip";
