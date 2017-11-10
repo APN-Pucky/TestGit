@@ -19,10 +19,8 @@ before_install:
 - if [[ ! "$TRAVIS_OS_NAME" == "osx" ]]; then "./build/${TUO_TARGET}/requirements.sh"; fi
 
 install:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make rebuild -f Makefile.osx VERSION=$TRAVIS_TAG;
-  fi
-- if [[ ! "$TRAVIS_OS_NAME" == "osx" ]]; then source ./build/${TUO_TARGET}/build.sh;
-  fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make rebuild -f Makefile.osx VERSION=$TRAVIS_TAG;  fi
+- if [[ ! "$TRAVIS_OS_NAME" == "osx" ]]; then source ./build/${TUO_TARGET}/build.sh;  fi
 script:
 - echo "NOP"
 before_deploy:
@@ -30,12 +28,9 @@ before_deploy:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then chmod 755 tuo.osx; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp tuo.osx $TUO_FILE_32; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp tuo.osx $TUO_FILE_64; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export TUO_FILE_ZIP="tuo.${TRAVIS_TAG}_32+64_bit_osx.zip";
-  fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then zip -r "$TUO_FILE_ZIP" data/ "$TUO_FILE_32"
-  "$TUO_FILE_64"; fi
-- if [[ ! "$TRAVIS_OS_NAME" == "osx" ]]; then source build/${TUO_TARGET}/package.sh;
-  fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export TUO_FILE_ZIP="tuo.${TRAVIS_TAG}_32+64_bit_osx.zip";fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then zip -r "$TUO_FILE_ZIP" data/ "$TUO_FILE_32" "$TUO_FILE_64" update_xml.sh; fi
+- if [[ ! "$TRAVIS_OS_NAME" == "osx" ]]; then source build/${TUO_TARGET}/package.sh; fi
 deploy:
   provider: releases
   name: "${TRAVIS_COMMIT_MESSAGE}"
