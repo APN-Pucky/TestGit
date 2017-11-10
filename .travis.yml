@@ -26,8 +26,8 @@ before_deploy:
 - "./update_xml.sh"
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp tuo.osx $TUO_FILE_32; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp tuo.osx $TUO_FILE_64; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; export TUO_FILE_ZIP="tuo.${TRAVIS_TAG}_32+64_bit_osx.zip"; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; zip -r "$TUO_FILE_ZIP" data/ "$TUO_FILE_32" "$TUO_FILE_64"; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export TUO_FILE_ZIP="tuo.${TRAVIS_TAG}_32+64_bit_osx.zip"; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then zip -r "$TUO_FILE_ZIP" data/ "$TUO_FILE_32" "$TUO_FILE_64"; fi
 - if [[ ! "$TRAVIS_OS_NAME" == "osx" ]]; then source build/${TUO_TARGET}/package.sh; fi
 deploy:
   provider: releases
