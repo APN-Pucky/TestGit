@@ -16,7 +16,8 @@ matrix:
     os: osx
 before_install:
 - TUO_TARGET="${TUO_PLATFORM::${#TUO_PLATFORM}-2}"
-- "./build/${TUO_TARGET}/requirements.sh"
+- if [[ ! "$TRAVIS_OS_NAME" == "osx" ]]; then "./build/${TUO_TARGET}/requirements.sh"; fi
+
 install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make rebuild -f Makefile.osx VERSION=$TRAVIS_TAG;
   fi
