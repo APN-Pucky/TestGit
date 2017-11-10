@@ -18,22 +18,25 @@ before_install:
 - TUO_TARGET="${TUO_PLATFORM::${#TUO_PLATFORM}-2}"
 - "./build/${TUO_TARGET}/requirements.sh"
 install:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make rebuild -f Makefile.osx VERSION=$TRAVIS_TAG; fi
-- if [[ ! "$TRAVIS_OS_NAME" == "osx" ]]; then source ./build/${TUO_TARGET}/build.sh; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make rebuild -f Makefile.osx VERSION=$TRAVIS_TAG;
+  fi
+- if [[ ! "$TRAVIS_OS_NAME" == "osx" ]]; then source ./build/${TUO_TARGET}/build.sh;
+  fi
 script:
 - echo "NOP"
 before_deploy:
 - "./update_xml.sh"
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp tuo.osx $TUO_FILE_32; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp tuo.osx $TUO_FILE_64; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export TUO_FILE_ZIP="tuo.${TRAVIS_TAG}_32+64_bit_osx.zip"; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then zip -r "$TUO_FILE_ZIP" data/ "$TUO_FILE_32" "$TUO_FILE_64"; fi
-- if [[ ! "$TRAVIS_OS_NAME" == "osx" ]]; then source build/${TUO_TARGET}/package.sh; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export TUO_FILE_ZIP="tuo.${TRAVIS_TAG}_32+64_bit_osx.zip";
+  fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then zip -r "$TUO_FILE_ZIP" data/ "$TUO_FILE_32"
+  "$TUO_FILE_64"; fi
+- if [[ ! "$TRAVIS_OS_NAME" == "osx" ]]; then source build/${TUO_TARGET}/package.sh;
+  fi
 deploy:
   provider: releases
   name: "${TRAVIS_COMMIT_MESSAGE}"
-  api_key:
-    secure: jY8H/qppcRs1C9lM1Q+9DB6pTrxsXn51XMuBietd28MBUHjQJH2Nh0SzTGWogUFKXV3RuXXdDp3eRr9NidyLzX/awDGgED04THDV5+ba9qpJEP5vItC1ZG52RteRET9RSUqvqXETP6juvuyUb+caiFA7cTkPetEJyEI8lcXbctS1S6t99A/uX3LjOmsz3bEw1MJ4vES6acuwXSzTwPorRCuydpyugMZLkAxl9v5s/eBJ1cg39Ly2yzbgZR3RzRCgzzACj5yEjyTksiyBmBGwbfIN8UvQZLprJOFE0j2/ZB9aGU0q/p6ICM54pJMzdJLjcz9k8cN4iM/5YEJaybnECXggOEb8cfTcwifO4dyMYXGdYqvSest6YI8hQF0P37ibos0UxefljV2XKCAKd+H59LaPgkxZ9XICZ+4M+GU3jjkprl00bjbdOWAsEBRupDI6Umi+jbgwf/UjnjfOCjnCZYp3atn31PSIJbusrHjxhJf5BTHlgGDibn/+jIDVxZ+5rpAsezEsHKNDucwwOSXuV4kglzuN325gmt3P0WYM0gCI8UR/ax9lpy2mwUbc1XzYE8yqLc7vqzLtMu94LUH5BXipErK0XncTj2LUF2vfExXXBORIJiPdA83OxV9GoP00WfD8WwjeWZa1VWHHY5crEpGVE3FAHGlRBn/xRwYh6lc=
   file:
   - "${TUO_FILE_32}"
   - "${TUO_FILE_64}"
@@ -41,3 +44,5 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
+  api-key:
+    secure: p1l7NIteDv8Gi3AnlV/6g5sGvtGmNRoPCTqu42yt2S/KCrOrfxqWrnRcFM63TALrP0LOAA4VgAki+iEjndMwNN6Udf37Frix3uErZusltEAw0EiDTn01G1qTbAeTCyBrYMYIdfAMid/eurQUGlTbLuWStYsLO7mL0b4RGWr7Y0Jqu3TR8LcsVSPJjzo1o5vhG/l61A84qm6C9fKyrj07vA7lgUfjKQbG+D09868AH5w5TIaAzId7rXIpWfFGF2pcWB6Ooj6UWBEfI98xw1dIMCvbYX+12Zbn7I1TX6RYrixVb27vP8hQ57Y0S6qTfKSu5rbwf53tzN3KKANcxBCxaRfe8rRsjqCiP1mF4UTd61XJcMBIE+4N42t/F/K9UZrRrwid7qiHG0JDlpDvVZnBr74NdvOVyhuXwgKR3gCxwPRkjbQCtAgjIDHnkiasRZ1+BQqgZnXtW64/WoJLLClATv/BXR9vG+iR7tE7R5MT6Dp4fwUxmkKi7jfCAAOnI33L9cC0XI8Z9px9mxUr7vR7mpFQd1InX7ogNHktsg7/Ww0xm9rn1g49UbuiwoF8BizGlu9ZaEu2ZxoVAK2VT68VuxdE7yBcBr6/fs38jXFEemMi3j/DphYwXd/8vx4wP/Aj7tTUV5T3oz9aL7iYt3xQdio+1tfXq03nVvUqDASpRW0=
