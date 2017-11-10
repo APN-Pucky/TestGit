@@ -1,6 +1,6 @@
-MAIN := tuo.osx
+MAIN := tuodebug.osx
 SRCS := $(wildcard *.cpp)
-OBJS := $(patsubst %.cpp,obj/%.o,$(SRCS))
+OBJS := $(patsubst %.cpp,obj-debug/%.o,$(SRCS))
 INCS := $(wildcard *.h)
 
 ifndef VERSION
@@ -11,13 +11,13 @@ ${warning "VERSION is not set (USING NO VERSION instead), use make VERSION=vX.XX
 endif
 endif
 
-CPPFLAGS := -Wall -Werror -std=c++11 -stdlib=libc++ -Ofast -I/usr/local/include -DNDEBUG -DNQUEST -DTYRANT_OPTIMIZER_VERSION='"$(VERSION)"'
+CPPFLAGS := -Wall -Werror -std=c++11 -stdlib=libc++ -Ofast -I/usr/local/include -DTYRANT_OPTIMIZER_VERSION='"$(VERSION)--debug"'
 LDFLAGS :=  -L/usr/local/lib -lboost_system-mt -lboost_thread-mt -lboost_filesystem-mt -lboost_regex-mt
 
 all: $(MAIN)
 
-obj/%.o: %.cpp ${INCS}
-	mkdir -p obj
+obj-debug/%.o: %.cpp ${INCS}
+	mkdir -p obj-debug
 	$(CXX) $(CPPFLAGS) -o $@ -c $<
 
 $(MAIN): $(OBJS)
@@ -26,4 +26,4 @@ $(MAIN): $(OBJS)
 rebuild: clean all
 
 clean:
-	rm -f $(MAIN) obj/*.o
+	rm -f $(MAIN) obj-debug/*.o
