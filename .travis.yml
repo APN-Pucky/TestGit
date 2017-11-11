@@ -16,6 +16,8 @@ matrix:
     os: osx
 before_install:
 - TUO_TARGET="${TUO_PLATFORM::${#TUO_PLATFORM}-2}"
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then rvm get stable --auto-dotfiles;  fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew search boost;  fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install boost;  fi
 - if [[ ! "$TRAVIS_OS_NAME" == "osx" ]]; then "./build/${TUO_TARGET}/requirements.sh"; fi
 
