@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -xue
 
 
 #DEPLOY_FILE=tuo_@VERSION@_${TUO_PLATFORM}.exe
@@ -14,4 +13,3 @@ export TUO_FILE_ZIP="tuo.${TRAVIS_TAG}_32+64_bit_osx.zip"
 zip -r "$TUO_FILE_ZIP" data/ "$TUO_FILE_32" "$TUO_FILE_64" 
 
 
-set +xue
