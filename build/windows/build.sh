@@ -2,6 +2,9 @@
 
 set -xue
 
+uname -a
+uname -m
+
 MXE_DIR=/usr/lib/mxe
 
 MXE_TARGET=x86_64-w64-mingw32.static
