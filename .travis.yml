@@ -9,11 +9,6 @@ matrix:
     dist: trusty
     sudo: required
     compiler: gcc
-  - env:
-    - TUO_PLATFORM='macXX'
-    - TUO_FILE_32='tuo_x86.osx'
-    - TUO_FILE_64='tuo_x64.osx'
-    os: osx
 before_install:
 - TUO_TARGET="${TUO_PLATFORM::${#TUO_PLATFORM}-2}"
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then rvm get stable --auto-dotfiles;  fi
